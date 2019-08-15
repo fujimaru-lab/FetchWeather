@@ -10,9 +10,15 @@
 
 . ./common.env
 
+if [ -z "${GITHUB_USERNAME}" ]; then
+    echo "You should edit common.env file before init Go project..."
+    exit 111
+fi
+
 GO_PROJ_HOME=${GOPATH}/src/github.com/${GITHUB_USERNAME}/
 
 if [ ! -e ${GO_PROJ_HOME} ]; then
+    echo "made directory:${GO_PROJ_HOME}"
     mkdir ${GO_PROJ_HOME}
 fi
 
@@ -23,21 +29,19 @@ GO_PROJ_NAME=$1
 if [ -z "${GO_PROJ_NAME}" ]; then
     echo "You shoud pass argument."
     echo "process end..."
-    exit 111
+    exit 222
 fi
 
 if [ -e ./${GO_PROJ_NAME} ]; then
     echo "Same Project is already exists."
     echo "process end..."
-    exit 222
-else
+    exit 333
+fi
+
     # プロジェクトのルートフォルダを生成
     mkdir ${GO_PROJ_NAME}
     cd ./${GO_PROJ_NAME}
 
-    # git init
-    git init
-    
     # プロジェクトの各子フォルダを生成
     # /cmd
     mkdir ./cmd
@@ -93,10 +97,11 @@ else
     # /resource
     mkdir ./resource
 
+    # git init
+    git init
     git add .
     git commit -m "first commit. create project ${GO_PROJ_NAME}"
 
     # end message
     echo "Your ${GO_PROJ_NAME} is ready to start."
-    echo "Fun Go-ing :)"
-fi
+    echo "Keep Fun Go-ing :)"

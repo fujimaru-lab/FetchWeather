@@ -8,8 +8,10 @@ import (
 )
 
 func main() {
+	// プログラムのロゴを表示
 	logo.PrintLogo()
 
+	// ユーザーの標準入力により都市名を取得
 	reader := console.NewUserInputReader(">>Where is the city Do you want to know how the weather is ?:")
 	reader.Prompt()
 	cityName := reader.ReadUserInput()

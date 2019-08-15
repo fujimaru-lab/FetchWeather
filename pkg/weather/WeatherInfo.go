@@ -17,6 +17,11 @@ const APPID = "43258cd3a93e0fb5f88294f3afdf1615"
 type InfoDownloader struct {
 }
 
+// NewInfoDownloader レシーバの生成
+func NewInfoDownloader() *InfoDownloader {
+	return &InfoDownloader{}
+}
+
 // GetCurrentInfoByCityName download weather info by city name
 // cityName（都市名）をリクエストパラメータにしてOpenWeather APIから現在の天気情報をbyte配列として取得する。
 func (downloader *InfoDownloader) GetCurrentInfoByCityName(cityName string) ([]byte, error) {

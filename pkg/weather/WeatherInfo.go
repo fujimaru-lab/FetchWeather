@@ -102,7 +102,7 @@ func InitiateInfoFromJSONFile(filePath string) (info Info, err error) {
 	err = json.Unmarshal(jsonData, &info)
 
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("can't initiate struct:%s\n", err.Error())
 		return
 	}
 

@@ -15,7 +15,7 @@ func main() {
 	// プログラムのロゴを表示
 	logo.PrintItalicLogo()
 
-	cityName := "tokyo"
+	cityName := "fukuoka"
 
 	// 気象情報ダウンローダのレシーバを生成
 	downloader := weather.NewInfoDownloader()

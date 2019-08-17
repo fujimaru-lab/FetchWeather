@@ -41,16 +41,16 @@ func (downloader *InfoDownloader) GetCurrentInfoByCityName(cityName string) ([]b
 // WriteDownToJSONFile APIからレスポンスとして取得した天気情報を格納したbyte配列を、JSON形式のファイルとして書き込む
 // ファイル名のフォーマットは
 // 例："WeatherInfo_FUKUOKA[2019AUG16_20:19].json"
-func (downloader *InfoDownloader) WriteDownToJSONFile(responseBody []byte, cityName string) (bool, string) {
+func (downloader *InfoDownloader) WriteDownToJSONFile(responseBody []byte, cityName string) (isFinish bool, outputFilePath string) {
 	err := os.MkdirAll(OutputDirPath, os.ModeDir)
 	if err != nil {
 		fmt.Println(err)
-		return false, ""
+		return
 	}
 
 	// 出力先のファイル名を取得
 	now := time.Now()
-	outputFilePath := fmt.Sprintf("%sWeatherInfo_%s_%d%3s%02d_%02d%02d.json", OutputDirPath, strings.ToUpper(cityName), now.Year(), strings.ToUpper(now.Month().String())[:3], now.Day(), now.Hour(), now.Minute())
+	outputFilePath = fmt.Sprintf("%sWeatherInfo_%s_%d%3s%02d_%02d%02d.json", OutputDirPath, strings.ToUpper(cityName), now.Year(), strings.ToUpper(now.Month().String())[:3], now.Day(), now.Hour(), now.Minute())
 
 	// 出力先のファイルを生成
 	outputFile, err := os.Create(outputFilePath)
@@ -58,14 +58,14 @@ func (downloader *InfoDownloader) WriteDownToJSONFile(responseBody []byte, cityN
 
 	if err != nil {
 		fmt.Println(err)
-		return false, ""
+		return
 	}
 
 	//　出力先ファイルへの書き込み
 	dataSize, err := outputFile.Write(responseBody)
 	if err != nil {
 		fmt.Println(err)
-		return false, ""
+		return
 	}
 
 	fmt.Printf("Wrote Down to %s :%dbytes.\n", outputFile.Name(), dataSize)

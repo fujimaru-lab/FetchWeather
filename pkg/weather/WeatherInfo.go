@@ -109,3 +109,29 @@ func InitiateInfoFromJSONFile(filePath string) (info Info, err error) {
 	return info, nil
 
 }
+
+// SMessagef レシーバの持つ情報を書式化文字列として返す
+func (info *Info) SMessagef() string {
+	message := fmt.Sprintf("city name  :%s (lon:%03.2f lat:%03.2f)\n", info.Name, info.Coord.Lon, info.Coord.Lat)
+	message += fmt.Sprintf("country    :%s", info.Sys.Country)
+	for index, weather := range info.Weather {
+		message += fmt.Sprintf(`
+Weather[%d]:
+    main       :%s
+    description:%s
+`, index+1, weather.Main, weather.Description)
+	}
+	message += fmt.Sprintf("basic Information:\n")
+	message += fmt.Sprintf("    temperature :%03.2f (max:%03.2f min:%03.2f)\n    humidity    :%03.2f\n    sealevel    :%03.2f\n    grandleve   :%03.2f\n", kelvin2Celsius(info.Main.Temp), kelvin2Celsius(info.Main.TempMax), kelvin2Celsius(info.Main.TempMin), info.Main.Humidity, info.Main.SeaLevel, info.Main.GrndLevel)
+	message += fmt.Sprintf("wind :\n    speed:%03.2f degree:%03.2f\n", info.Wind.Speed, info.Wind.Deg)
+	message += fmt.Sprintf("cloud:\n    all  :%03.2f\n", info.Clouds.All)
+	return message
+}
+
+//
+func kelvin2Celsius(value float64) float64 {
+	if value <= 0 {
+		return value
+	}
+	return value - 273.15
+}

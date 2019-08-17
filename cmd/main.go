@@ -8,17 +8,14 @@ import (
 	"github.com/fujimaru-lab/FetchWeather/pkg/weather"
 
 	"github.com/fujimaru-lab/FetchWeather/internal/logo"
-	"github.com/fujimaru-lab/FetchWeather/pkg/console"
 )
 
+// パッケージ作成に当たりテストコード以外で試す場合にここを使う
 func main() {
 	// プログラムのロゴを表示
 	logo.PrintItalicLogo()
 
-	// ユーザーの標準入力により都市名を取得
-	reader := console.NewUserInputReader(">>Where is the city Do you want to know how the weather is ?:")
-	reader.Prompt()
-	cityName := reader.ReadUserInput()
+	cityName := "tokyo"
 
 	// 気象情報ダウンローダのレシーバを生成
 	downloader := weather.NewInfoDownloader()
@@ -50,4 +47,12 @@ func main() {
 
 	_, fileName := filepath.Split(filePath)
 	fmt.Printf("status:download[ok], write file[ok]\nfile name:%s\n", fileName)
+
+	info, err := weather.InitiateInfoFromJSONFile(filePath)
+
+	if err != nil {
+		fmt.Printf("Initiation Info is fail:%s\n", err.Error())
+	}
+
+	fmt.Println(info.SMessagef())
 }
